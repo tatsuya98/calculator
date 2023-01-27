@@ -6,6 +6,7 @@ let number2
 let operator
 let currentNumber = ""
 let screenText = ""
+let result = ""
 const evaluate = document.querySelector('#evaluate')
 const add = (a,b) =>{
     return Number(a) + Number(b)
@@ -44,7 +45,11 @@ const changeNumberEvent = (first,second) =>{
         number.addEventListener('click',second)
     })
 }
-const resetVariables = () =>{
+const resetVariable = () =>{
+    if(result != ""){
+        currentNumber = ""
+        number1 = ""  
+    }
     currentNumber = ""
     changeNumberEvent(addToValue,addToValue1)
 }
@@ -53,6 +58,7 @@ const resetCalculator = () =>{
     number1 = ""
     number2 = ""
     operator= ""
+    result=""
     screen.textContent = "0"
     changeNumberEvent(addToValue1,addToValue)
 }
@@ -70,7 +76,7 @@ const setOperator = (e) =>{
     operatorVariable = e.currentTarget
     operator = operatorVariable.value
     changeOperatorLook(operatorVariable)
-    resetVariables()
+    resetVariable()
     operatorVariable.removeEventListener('click',setOperator)
     operatorVariable.addEventListener('click',deSelectOperator)
 }
@@ -110,11 +116,19 @@ const addNumbers = () =>{
         numberButton.addEventListener('click',addToValue)
     }
 }
+const continueCalculation = (number,operator) => {
+    return operator == '+' ? add(result,number) : operator == '-' ? subtract(result,number) : operator == '*' ? multiply(result,number) : divide(result,number)
+}
 clear.addEventListener('click',resetCalculator)
 evaluate.addEventListener('click',()=>{
-    const content = operate(number1, number2, operator)
+    if(result == ""){
+        result = operate(number1, number2, operator)
+    }else{
+        result = continueCalculation(number2,operator)
+    }
+    resetVariable()
     resetOperators()
-    setScreenContent(content)
+    setScreenContent(result)
 })
 setEvents()
 addNumbers()
