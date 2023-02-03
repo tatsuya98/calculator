@@ -33,6 +33,16 @@ const addToValue = (e) =>{
     number1 = currentNumber
     setScreenContent(number1)
 }
+const addToValueThroughKey = (numberButtonPressed)=>{
+    currentNumber = currentNumber.concat(numberButtonPressed)
+    number1 = currentNumber
+    setScreenContent(number1)
+}
+const addToValueThroughKey1 = (numberButtonPressed)=>{
+    currentNumber = currentNumber.concat(numberButtonPressed)
+    number2 = currentNumber
+    setScreenContent(number2)
+}
 const addToValue1 = (e) =>{
     currentNumber = currentNumber.concat(e.currentTarget.value)
     number2 = currentNumber
@@ -45,6 +55,7 @@ const changeNumberEvent = (first,second) =>{
         number.addEventListener('click',second)
     })
 }
+
 const resetVariable = () =>{
     if(result != ""){
         currentNumber = ""
@@ -61,6 +72,8 @@ const resetCalculator = () =>{
     result=""
     screen.textContent = "0"
     changeNumberEvent(addToValue1,addToValue)
+    removeKeyEvent(keyCheck1)
+    setKeyEvent()
 }
 const changeOperatorLook = (operatorVariable) => {
     operatorVariable.style.backgroundColor = 'orange'
@@ -79,6 +92,8 @@ const setOperator = (e) =>{
     resetVariable()
     operatorVariable.removeEventListener('click',setOperator)
     operatorVariable.addEventListener('click',deSelectOperator)
+    removeKeyEvent(keyCheck)
+    setKeyEvent1()
 }
 const deSelectOperator = (e) =>{
     operatorVariable = e.currentTarget
@@ -104,6 +119,31 @@ const setEvents = () =>{
     reset.forEach((button) =>{
         button.addEventListener('click',setOperator)
 
+    })
+}
+const setKeyEvent = () =>{
+    document.addEventListener('keydown',keyCheck)
+}
+const setKeyEvent1 = () =>{
+    document.addEventListener('keydown',keyCheck1)
+}
+const removeKeyEvent = (functionToRemove) =>{
+   document.removeEventListener('keydown',functionToRemove)
+}
+const keyCheck = (e) =>{
+    const numberButtons = document.querySelectorAll('.number')
+    numberButtons.forEach(numberButton =>{
+        if(e.key == numberButton.value){
+            addToValueThroughKey(numberButton.value)
+        }
+    })
+}
+const keyCheck1 = (e) =>{
+    const numberButtons = document.querySelectorAll('.number')
+    numberButtons.forEach(numberButton =>{
+        if(e.key == numberButton.value){
+            addToValueThroughKey1(numberButton.value)
+        }
     })
 }
 const addNumbers = () =>{
@@ -132,5 +172,6 @@ evaluate.addEventListener('click',()=>{
 })
 setEvents()
 addNumbers()
+setKeyEvent()
 
 
